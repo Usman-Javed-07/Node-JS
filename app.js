@@ -1,3 +1,7 @@
+
+
+
+
 const { readFileSync } = require('fs');
 const http = require('http');
 
@@ -6,50 +10,45 @@ const homeStyle = readFileSync('./navbar-app/style.css');
 const homeImage = readFileSync('./navbar-app/logo.svg');
 const homeLogic = readFileSync('./navbar-app/browser-app.js');
 
-const server = http.createServer((req , res) => {
-const url = req.url;
+const server = http.createServer((req, res) => {
+    const url = req.url;
 
-
-
-// home page
-if(url === '/') {
-    res.writeHead(200 , { 'content-type' : 'text/html'})
-    res.write(homePage)
-    res.end();
-}
-//  about page 
- else if (url === '/about') {
-    res.writeHead(200 , { 'content-type' : 'text/html'})
-    res.write('<h1> about page </h1>')
-    res.end();
- }
-// style
-if(url === '/style.css') {
-    res.writeHead(200 , { 'content-type' : 'text/css'})
-    res.write(homeStyle)
-    res.end();
-}
-
-// image
-if(url === '/logo.svg') {
-    res.writeHead(200 , { 'content-type' : 'text/html'})
-    res.write(homeImage)
-    res.end();
-}
-// logic
-if(url === '/browser-app.js') {
-    res.writeHead(200 , { 'content-type' : 'text/html'})
-    res.write(homeLogic)
-    res.end();
-}
-
-//  404 error 
-else {
-    res.writeHead(404 , { 'content-type' : 'text/html'})
-    res.write('<h1> page not found  </h1>')
-    res.end();
-}
-    
+    // Home page
+    if (url === '/') {
+        res.writeHead(200, { 'content-type': 'text/html' });
+        res.write(homePage);
+        res.end();
+    }
+    // About page
+    else if (url === '/about') {
+        res.writeHead(200, { 'content-type': 'text/html' });
+        res.write('<h1>About page</h1>');
+        res.end();
+    }
+    // Style
+    else if (url === '/style.css') {
+        res.writeHead(200, { 'content-type': 'text/css' });
+        res.write(homeStyle);
+        res.end();
+    }
+    // Image
+    else if (url === '/logo.svg') {
+        res.writeHead(200, { 'content-type': 'image/svg+xml' });
+        res.write(homeImage);
+        res.end();
+    }
+    // Logic
+    else if (url === '/browser-app.js') {
+        res.writeHead(200, { 'content-type': 'text/javascript' });
+        res.write(homeLogic);
+        res.end();
+    }
+    // 404 error
+    else {
+        res.writeHead(404, { 'content-type': 'text/html' });
+        res.write('<h1>Page not found</h1>');
+        res.end();
+    }
 });
 
-server.listen(5000)
+server.listen(5000);
