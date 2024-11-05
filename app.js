@@ -1,30 +1,27 @@
 
-// express js 
 
 const express = require('express');
 const app = express();
-app.get('/', (req , res)=> {
-    console.log('user hit the resourece');
+const {products} = require('./data')
+
+app.get('/', (req, res)=> {
+    res.send('<h1> Home page</h1> <a href = "/api/products"> producs </a>')
+})
+app.get('/api/products', (req, res) => {
+    const newProduct = products.map((product)=> {
+        const {id, name , image} = product
+        return {id, name , image}
+    })
+    res.json(newProduct)
+})
+app.get('/api/products/:productID', (req, res) => {
+    const { productID } = req.params;
+    const singleProduct = products.find((product)=>  product.id === Number(productID))
     
- res.status(200).send('home page')
-});
-app.get('/about', (req , res) => {
-    res.status(200).send('about page')
-});
-app.all('*' , (req , res)=> {
-res.status(404).send('<h1> Page not found </h1>')
-});
+ return  res.json(singleProduct)
+})
 
-app.listen(5000 , ()=> {
-    console.log('server listing on port 5000 ....');
+app.listen(5000, (req , res)=> {
+    console.log('server is listing on port 5000...');
     
-});
-
-
-// app.get     read the file
-// app.post    insert the file
-// app.put     update the file
-// app.delete  delete the file
-// app.all     match a url path that is exacatly equal to the specified path
-// app.use     match a url that start with the path 
-// app.listen  tells that in which port to start the app
+})
