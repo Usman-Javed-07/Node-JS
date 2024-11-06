@@ -8,6 +8,13 @@ app.use(express.static('./method-public'))
 // parse form data 
 // app.use(express.urlencoded({extended: false}))
 app.use(express.json())
+app.post('/login' , (req , res)=>{
+    const {name} = req.body;
+    if(name) {
+        return res.status(200).send(`welcome ${name}`)
+    }
+    res.status(401).send('please provide credentials')
+})
 app.get('/api/people', (req, res) => {
     res.status(200).json({success: true , data:people })
 })
@@ -21,7 +28,7 @@ app.post('/api/people', (req , res)=> {
 })
 
 
-app.post('/api/postman/people', (req , res)=> {
+app.post('/api/people/postman', (req , res)=> {
     const { name } = req.body
     if(!name) {
         return res.status(400).json({success: false, msg: 'please provide name value'})
@@ -30,13 +37,6 @@ app.post('/api/postman/people', (req , res)=> {
 })
 
 
-app.post('/login' , (req , res)=>{
-    const {name} = req.body;
-    if(name) {
-        return res.status(200).send(`welcome ${name}`)
-    }
-    res.status(401).send('please provide credentials')
-})
 
 //  put request
 
@@ -56,6 +56,21 @@ app.put ('/api/people/:id', (req , res)=> {
         return person
     })
     res.status(200).json ({success:true, data:newPeople})
+})
+
+// delete method '
+app.delete('/api/people/:id', (req, res)=> {
+   
+    const person = people.find((person)=> person.id === Number(req.params.id))
+    if(!person) {
+        return res
+        .status (404)
+        .json({success: false, msg: `no person with id ${req.params.id}`})
+    }
+    const newPeople = people.filter(
+        (person)=> person.id !== Number(req.params.id)
+    )
+        return res.status(200).json({success: true , data: newPeople})
 })
 
 app.listen(5000, (req , res)=> {
