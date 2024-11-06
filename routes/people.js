@@ -78,65 +78,90 @@
 
 const express = require('express');
 const router = express.Router();
+let {people} = require('../data')
+const {
+    getPeople,
+    createPerson,
+    createPersonPostman,
+    updatePerson,
+    deletePerson
+} = require('../controllers/people')
 
-// Sample data for `people`
-let people = [
-    { id: 1, name: 'John Doe' },
-    { id: 2, name: 'Jane Doe' }
-];
 
-// GET all people
-router.get('/', (req, res) => {
-    res.status(200).json({ success: true, data: people });
-});
 
-// POST a new person
-router.post('/', (req, res) => {
-    const { name } = req.body;
-    if (!name) {
-        return res.status(400).json({ success: false, msg: 'Please provide name value' });
-    }
-    const newPerson = { id: people.length + 1, name };
-    people.push(newPerson);
-    res.status(201).json({ success: true, person: newPerson });
-});
+// router.get('/',getPeople)
+// router.post('/',createPerson)
+// router.post('/postman',createPersonPostman)
+// router.put('/:id',updatePerson)
+// router.delete('/:id',deletePerson)
 
-// POST route for Postman testing (if needed)
-router.post('/postman', (req, res) => {
-    const { name } = req.body;
-    if (!name) {
-        return res.status(400).json({ success: false, msg: 'Please provide name value' });
-    }
-    const newPerson = { id: people.length + 1, name };
-    people.push(newPerson);
-    res.status(201).json({ success: true, data: people });
-});
+router.route('/').get(getPeople).post(createPerson)
+router.route('/postman').post(createPersonPostman)
+router.route('/:id').put(updatePerson).delete(deletePerson)
 
-// PUT to update a person by ID
-router.put('/:id', (req, res) => {
-    const { id } = req.params;
-    const { name } = req.body;
-    const person = people.find((person) => person.id === Number(id));
 
-    if (!person) {
-        return res.status(404).json({ success: false, msg: `No person with id ${id}` });
-    }
+module.exports = router
 
-    person.name = name;
-    res.status(200).json({ success: true, data: people });
-});
 
-// DELETE a person by ID
-router.delete('/:id', (req, res) => {
-    const { id } = req.params;
-    const personIndex = people.findIndex((person) => person.id === Number(id));
+
+// // Sample data for `people`
+// let people = [
+//     { id: 1, name: 'John Doe' },
+//     { id: 2, name: 'Jane Doe' }
+// ];
+
+// // GET all people
+// router.get('/', (req, res) => {
+//     res.status(200).json({ success: true, data: people });
+// });
+
+// // POST a new person
+// router.post('/', (req, res) => {
+//     const { name } = req.body;
+//     if (!name) {
+//         return res.status(400).json({ success: false, msg: 'Please provide name value' });
+//     }
+//     const newPerson = { id: people.length + 1, name };
+//     people.push(newPerson);
+//     res.status(201).json({ success: true, person: newPerson });
+// });
+
+// // POST route for Postman testing (if needed)
+// router.post('/postman', (req, res) => {
+//     const { name } = req.body;
+//     if (!name) {
+//         return res.status(400).json({ success: false, msg: 'Please provide name value' });
+//     }
+//     const newPerson = { id: people.length + 1, name };
+//     people.push(newPerson);
+//     res.status(201).json({ success: true, data: people });
+// });
+
+// // PUT to update a person by ID
+// router.put('/:id', (req, res) => {
+//     const { id } = req.params;
+//     const { name } = req.body;
+//     const person = people.find((person) => person.id === Number(id));
+
+//     if (!person) {
+//         return res.status(404).json({ success: false, msg: `No person with id ${id}` });
+//     }
+
+//     person.name = name;
+//     res.status(200).json({ success: true, data: people });
+// });
+
+// // DELETE a person by ID
+// router.delete('/:id', (req, res) => {
+//     const { id } = req.params;
+//     const personIndex = people.findIndex((person) => person.id === Number(id));
     
-    if (personIndex === -1) {
-        return res.status(404).json({ success: false, msg: `No person with id ${id}` });
-    }
+//     if (personIndex === -1) {
+//         return res.status(404).json({ success: false, msg: `No person with id ${id}` });
+//     }
 
-    people = people.filter((person) => person.id !== Number(id));
-    res.status(200).json({ success: true, data: people });
-});
+//     people = people.filter((person) => person.id !== Number(id));
+//     res.status(200).json({ success: true, data: people });
+// });
 
-module.exports = router;
+// module.exports = router;
